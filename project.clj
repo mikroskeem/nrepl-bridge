@@ -10,8 +10,8 @@
             [lein-ancient "0.6.15"]
             [lein-changelog "0.3.2"]]
   :aot [eu.mikroskeem.clj.nrepl.NreplBridge]
-  :deploy-repositories [["releases" "https://repo.wut.ee/repository/vapeout-repo"]
-                        ["snapshots" "https://repo.wut.ee/repository/vapeout-repo"]]
+  :deploy-repositories [["releases"  {:url "https://repo.wut.ee/repository/vapeout-repo" :creds :gpg}]
+                        ["snapshots" {:url "https://repo.wut.ee/repository/vapeout-repo" :creds :gpg}]]
   :aliases {"update-readme-version" ["shell" "sed" "-i" "s/\\\\[nrepl-bridge \"[0-9.]*\"\\\\]/[nrepl-bridge \"${:version}\"]/" "README.md"]}
   :release-tasks [["shell" "git" "diff" "--exit-code"]
                   ["change" "version" "leiningen.release/bump-version"]
