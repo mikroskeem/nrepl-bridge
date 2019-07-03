@@ -1,9 +1,10 @@
 (ns eu.mikroskeem.clj.nrepl.NreplBridge
-  (:use [nrepl.server :refer [start-server stop-server]])
+  (:use [nrepl.server :refer [default-handler start-server stop-server]])
   (:gen-class
     :state state
     :init init
     :methods [[bootServer [String int] void]
+              [bootServerWithHandler [Object String int] void]
               [isRunning [] boolean]
               [stopServer [] void]]))
 
@@ -18,12 +19,20 @@
     (contains? @(.state this) :server)
     (some? (@(.state this) :server))))
 
+(defn -bootServerWithHandler
+  "Boots up the nREPL server with specific handler on TCP host & port"
+  [this handler host port]
+  (if (-isRunning this)
+    (throw (IllegalStateException. "nREPL server is already running"))
+    (let [h (if (instance? String handler)
+              (symbol handler)
+              handler)]
+      (swap! (.state this) into {:server (start-server :handler h :bind host :port port)}))))
+
 (defn -bootServer
   "Boots up the nREPL server on TCP host & port"
   [this host port]
-  (if (-isRunning this)
-    (throw (IllegalStateException. "nREPL server is already running"))
-    (swap! (.state this) into {:server (start-server :bind host :port port)})))
+  (-bootServerWithHandler this (default-handler) host port))
 
 (defn -stopServer
   "Shuts down the nREPL server"
