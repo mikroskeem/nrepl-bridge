@@ -1,5 +1,7 @@
 # nrepl-bridge
 
+[![Build Status](https://travis-ci.org/mikroskeem/nrepl-bridge.svg?branch=master)](https://travis-ci.org/mikroskeem/nrepl-bridge)
+
 Java library to control [nREPL](https://github.com/nrepl/nrepl) launch from Java code
 
 ## License
